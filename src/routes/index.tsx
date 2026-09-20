@@ -60,7 +60,7 @@ function Index() {
       "--duration": `${8 + (index * 13) % 11}s`,
       "--delay": `${-((index * 1.83) % 18)}s`,
       "--wind": `${-50 + (index * 29) % 101}px`,
-      "--flower-color": colors[index % colors.length],
+      "--flower-color": colors[index % colors.length] ?? "#FFD700",
     };
     return { id: index, style };
   }), []);
