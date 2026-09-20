@@ -19,7 +19,8 @@
  */
 
 @theme inline {
-  --font-sans: "Montserrat", "Inter", sans-serif;
+  --font-sans: "Work Sans", sans-serif;
+  --font-display: "Instrument Serif", serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -64,24 +65,24 @@
 
 :root {
   --radius: 0.375rem;
-  --background: oklch(0 0 0);
+  --background: oklch(0.12 0.035 300);
   --foreground: oklch(1 0 0);
-  --card: oklch(0.145 0.015 285 / 88%);
+  --card: oklch(0.11 0.025 290 / 72%);
   --card-foreground: oklch(1 0 0);
   --popover: oklch(0.12 0.01 285);
   --popover-foreground: oklch(1 0 0);
-  --primary: oklch(0.87 0.18 95);
+  --primary: oklch(0.86 0.18 90);
   --primary-foreground: oklch(0.12 0.02 85);
-  --secondary: oklch(0.22 0.01 285);
+  --secondary: oklch(0.22 0.07 275);
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.23 0.008 285);
   --muted-foreground: oklch(0.76 0 0);
-  --accent: oklch(0.82 0.17 93);
+  --accent: oklch(0.88 0.17 90);
   --accent-foreground: oklch(0.1 0.01 85);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.31 0.01 285);
-  --input: oklch(0.2 0.01 285);
+  --border: oklch(0.86 0.18 90 / 30%);
+  --input: oklch(0.09 0.02 290 / 72%);
   --ring: oklch(0.87 0.18 95);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -155,6 +156,11 @@
   100% { transform: translate3d(calc(var(--wind) * -0.45), 112vh, 0) rotate(900deg); opacity: 0; }
 }
 
+@keyframes bouquet-breathe {
+  0%, 100% { filter: drop-shadow(0 0 18px oklch(0.86 0.18 90 / 18%)); transform: translateY(0); }
+  50% { filter: drop-shadow(0 0 32px oklch(0.86 0.18 90 / 32%)); transform: translateY(-5px); }
+}
+
 @keyframes equalizer {
   0%, 100% { transform: scaleY(.28); }
   50% { transform: scaleY(1); }
@@ -167,16 +173,37 @@
   width: var(--size);
   height: var(--size);
   color: var(--flower-color);
-  background:
-    radial-gradient(circle at 50% 14%, currentColor 0 16%, transparent 17%),
-    radial-gradient(circle at 86% 42%, currentColor 0 16%, transparent 17%),
-    radial-gradient(circle at 72% 82%, currentColor 0 16%, transparent 17%),
-    radial-gradient(circle at 28% 82%, currentColor 0 16%, transparent 17%),
-    radial-gradient(circle at 14% 42%, currentColor 0 16%, transparent 17%),
-    radial-gradient(circle at 50% 50%, var(--primary) 0 18%, transparent 19%);
+  width: calc(var(--size) * .34);
+  height: calc(var(--size) * .62);
+  border-radius: 70% 15% 70% 15%;
+  background: currentColor;
   filter: drop-shadow(0 0 8px color-mix(in oklab, var(--primary) 35%, transparent));
   animation: flower-fall var(--duration) linear var(--delay) infinite;
   will-change: transform, opacity;
+}
+
+@utility night-postcard {
+  background:
+    radial-gradient(circle at 50% 24%, oklch(0.22 0.07 275 / 82%), transparent 42%),
+    linear-gradient(180deg, var(--secondary), var(--background) 72%);
+  box-shadow: 0 35px 100px oklch(0 0 0 / 60%);
+}
+
+@utility music-capsule {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 40px oklch(0 0 0 / 42%), inset 0 1px 0 oklch(1 0 0 / 5%);
+  backdrop-filter: blur(14px);
+}
+
+@utility title-glow {
+  color: var(--primary);
+  text-shadow: 0 0 12px oklch(0.86 0.18 90 / 75%), 0 0 32px oklch(0.86 0.18 90 / 35%);
+}
+
+@utility bouquet-glow {
+  animation: bouquet-breathe 5s ease-in-out infinite;
+  transform-origin: center bottom;
 }
 
 @utility glass-panel {
