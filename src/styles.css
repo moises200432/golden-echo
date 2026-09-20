@@ -19,6 +19,7 @@
  */
 
 @theme inline {
+  --font-sans: "Montserrat", "Inter", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -62,26 +63,26 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --radius: 0.375rem;
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.145 0.015 285 / 88%);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.12 0.01 285);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.87 0.18 95);
+  --primary-foreground: oklch(0.12 0.02 85);
+  --secondary: oklch(0.22 0.01 285);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.23 0.008 285);
+  --muted-foreground: oklch(0.76 0 0);
+  --accent: oklch(0.82 0.17 93);
+  --accent-foreground: oklch(0.1 0.01 85);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.31 0.01 285);
+  --input: oklch(0.2 0.01 285);
+  --ring: oklch(0.87 0.18 95);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +141,83 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    margin: 0;
   }
+
+  button, select, input { font: inherit; }
+}
+
+@keyframes flower-fall {
+  0% { transform: translate3d(0, -12vh, 0) rotate(0deg); opacity: 0; }
+  6% { opacity: 1; }
+  48% { transform: translate3d(var(--wind), 50vh, 0) rotate(420deg); opacity: 0.95; }
+  100% { transform: translate3d(calc(var(--wind) * -0.45), 112vh, 0) rotate(900deg); opacity: 0; }
+}
+
+@keyframes equalizer {
+  0%, 100% { transform: scaleY(.28); }
+  50% { transform: scaleY(1); }
+}
+
+@utility flower {
+  position: absolute;
+  top: 0;
+  left: var(--left);
+  width: var(--size);
+  height: var(--size);
+  color: var(--flower-color);
+  background:
+    radial-gradient(circle at 50% 14%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 86% 42%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 72% 82%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 28% 82%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 14% 42%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 50% 50%, var(--primary) 0 18%, transparent 19%);
+  filter: drop-shadow(0 0 8px color-mix(in oklab, var(--primary) 35%, transparent));
+  animation: flower-fall var(--duration) linear var(--delay) infinite;
+  will-change: transform, opacity;
+}
+
+@utility glass-panel {
+  background: var(--card);
+  border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  box-shadow: 0 30px 90px oklch(0 0 0 / 55%);
+  backdrop-filter: blur(18px);
+}
+
+@utility player-button {
+  display: inline-flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  background: var(--secondary);
+  transition: transform .2s ease, border-color .2s ease, color .2s ease;
+  &:hover { transform: translateY(-2px); border-color: var(--primary); color: var(--primary); }
+  &:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+}
+
+@utility player-button-primary {
+  display: inline-flex;
+  height: 4rem;
+  width: 4rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 0;
+  color: var(--primary-foreground);
+  background: var(--primary);
+  box-shadow: 0 0 30px color-mix(in oklab, var(--primary) 24%, transparent);
+  transition: transform .2s ease, background .2s ease;
+  &:hover { transform: scale(1.05); background: var(--accent); }
+  &:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flower { animation-duration: 1ms; opacity: 0.12; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 1ms !important; }
 }
