@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { ChevronLeft, ChevronRight, Flower2, Music2, Pause, Play, Volume1, Volume2 } from "lucide-react";
 import { PlayerButton } from "@/components/PlayerButton";
+import bouquetImage from "@/assets/sunflower-bouquet.png";
 
 const tracks = [
   "EL MUNDO SE VA A ACABAR (con KARBeats)",
@@ -118,67 +119,51 @@ function Index() {
   };
 
   return (
-    <main className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-[linear-gradient(155deg,var(--background)_0%,var(--secondary)_150%)] px-3 py-8 sm:px-6 sm:py-12">
+    <main className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-background p-0 sm:px-6 sm:py-8">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {flowers.map((flower) => <span key={flower.id} className="flower select-none" style={flower.style} />)}
       </div>
 
-      <section className="glass-panel relative z-10 w-full max-w-[600px] overflow-hidden rounded-lg px-5 py-7 sm:px-9 sm:py-9" aria-label="Reproductor de Por Si Mañana No Estoy">
-        <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-primary" />
-        <header className="text-center">
-          <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-primary">
-            <Flower2 size={25} strokeWidth={1.7} />
-          </div>
-          <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-primary">Omar Courts</p>
-          <h1 className="text-[clamp(1.65rem,5vw,2.25rem)] font-extrabold leading-[1.12] tracking-[0.02em] text-foreground">POR SI MAÑANA<br />NO ESTOY</h1>
-          <p className="mt-3 text-xs text-muted-foreground sm:text-sm">Todas las canciones completas en un solo lugar</p>
+      <section className="night-postcard relative z-10 flex min-h-[100svh] w-full max-w-[460px] flex-col items-center overflow-hidden px-5 pb-3 pt-10 sm:min-h-[860px] sm:rounded-[2rem] sm:border sm:border-primary/20 sm:px-8 sm:pt-12" aria-label="Reproductor de Por Si Mañana No Estoy">
+        <header className="relative z-20 text-center">
+          <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary/80">Omar Courts presenta</p>
+          <h1 className="title-glow font-display text-[clamp(3.1rem,12vw,4.7rem)] italic leading-[0.9] tracking-[0.02em]">Por Si Mañana<br />No Estoy</h1>
+          <p className="mt-3 text-[11px] text-muted-foreground">Todas las canciones, una sola noche</p>
         </header>
 
-        <div className="my-7 h-px bg-border" />
+        <div className="music-capsule relative z-30 mt-7 w-full rounded-2xl p-3.5">
+          <div className="flex items-center gap-3">
+            <PlayerButton label={playing ? "Pausar" : "Reproducir"} primary className="h-12 w-12 shrink-0" onClick={togglePlay}>{playing ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" className="translate-x-px" />}</PlayerButton>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-medium text-foreground">{tracks[trackIndex]}</p>
+              <input aria-label="Progreso de la canción" type="range" min="0" max={duration || 0} step="0.01" value={Math.min(currentTime, duration || 0)} onChange={(event) => seek(Number(event.target.value))} className="mt-2 h-1 w-full cursor-pointer accent-primary" />
+              <div className="mt-1 flex justify-between font-mono text-[9px] text-muted-foreground"><span>{formatTime(currentTime)}</span><span>{formatTime(duration)}</span></div>
+            </div>
+          </div>
 
-        <label htmlFor="track-select" className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Selecciona una canción</label>
+          <div className="mt-2.5 flex items-center gap-2 border-t border-border/60 pt-2.5">
+            <PlayerButton label="Canción anterior" className="h-8 w-8 shrink-0" onClick={() => selectTrack(trackIndex - 1)}><ChevronLeft size={16} /></PlayerButton>
+            <label htmlFor="track-select" className="sr-only">Selecciona una canción</label>
         <select
           id="track-select"
           value={trackIndex}
           onChange={(event) => selectTrack(Number(event.target.value), false)}
-          className="h-12 w-full rounded-md border border-primary/70 bg-input px-3 text-sm text-foreground outline-none transition-shadow focus:ring-2 focus:ring-primary/30"
+            className="h-8 min-w-0 flex-1 rounded-md border border-border bg-input px-2 text-[10px] text-foreground outline-none focus:ring-1 focus:ring-primary"
         >
           {tracks.map((track, index) => <option key={track} value={index}>{index + 1}. {track}</option>)}
         </select>
-
-        <div className="mt-8 text-center" aria-live="polite">
-          <div className="mb-3 flex h-7 items-end justify-center gap-1 text-primary" aria-hidden="true">
-            {playing ? Array.from({ length: 5 }, (_, i) => (
-              <span key={i} className="h-6 w-1 origin-bottom rounded-full bg-primary" style={{ animation: `equalizer ${0.55 + i * 0.11}s ease-in-out ${i * 0.08}s infinite` }} />
-            )) : <Music2 size={25} />}
+            <PlayerButton label="Siguiente canción" className="h-8 w-8 shrink-0" onClick={() => selectTrack(trackIndex + 1)}><ChevronRight size={16} /></PlayerButton>
           </div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">{playing ? "Reproduciendo ahora" : "Lista para reproducir"}</p>
-          <h2 className="mx-auto mt-2 min-h-11 max-w-md text-sm font-semibold leading-relaxed text-foreground sm:text-base">{tracks[trackIndex]}</h2>
         </div>
 
-        <div className="mt-5">
-          <input
-            aria-label="Progreso de la canción"
-            type="range"
-            min="0"
-            max={duration || 0}
-            step="0.01"
-            value={Math.min(currentTime, duration || 0)}
-            onChange={(event) => seek(Number(event.target.value))}
-            className="h-1.5 w-full cursor-pointer accent-primary"
-          />
-          <div className="mt-2 flex justify-between font-mono text-[11px] text-muted-foreground"><span>{formatTime(currentTime)}</span><span>{formatTime(duration)}</span></div>
+        <div className="bouquet-glow relative z-10 -mt-2 flex w-[115%] flex-1 items-end justify-center sm:w-[108%]">
+          <img src={bouquetImage} alt="Ramo abundante de girasoles amarillos" width={1024} height={1280} className="max-h-[500px] w-auto max-w-full object-contain object-bottom" />
         </div>
 
-        <div className="mt-3 flex items-center justify-center gap-6">
-          <PlayerButton label="Canción anterior" onClick={() => selectTrack(trackIndex - 1)}><ChevronLeft size={21} /></PlayerButton>
-          <PlayerButton label={playing ? "Pausar" : "Reproducir"} primary onClick={togglePlay}>{playing ? <Pause size={25} fill="currentColor" /> : <Play size={25} fill="currentColor" className="translate-x-px" />}</PlayerButton>
-          <PlayerButton label="Siguiente canción" onClick={() => selectTrack(trackIndex + 1)}><ChevronRight size={21} /></PlayerButton>
-        </div>
-
-        <div className="mx-auto mt-7 flex max-w-[230px] items-center gap-3 text-muted-foreground">
-          {volume < 0.5 ? <Volume1 size={17} /> : <Volume2 size={17} />}
-          <input aria-label="Volumen" type="range" min="0" max="1" step="0.01" value={volume} onChange={(event) => setVolume(Number(event.target.value))} className="h-1.5 w-full cursor-pointer accent-primary" />
+        <div className="relative z-30 -mt-4 flex w-full items-center justify-center gap-3 pb-2 text-muted-foreground">
+          {volume < 0.5 ? <Volume1 size={15} /> : <Volume2 size={15} />}
+          <input aria-label="Volumen" type="range" min="0" max="1" step="0.01" value={volume} onChange={(event) => setVolume(Number(event.target.value))} className="h-1 w-28 cursor-pointer accent-primary" />
+          <span className="text-[9px] uppercase tracking-[0.2em]">Para ti</span>
         </div>
 
         <audio
@@ -190,7 +175,6 @@ function Index() {
           onPause={() => setPlaying(false)}
           onPlay={() => setPlaying(true)}
         />
-        <p className="mt-7 text-center text-[10px] uppercase tracking-[0.14em] text-muted-foreground/70">Pistas demo originales</p>
       </section>
     </main>
   );
