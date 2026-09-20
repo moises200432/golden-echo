@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { ChevronLeft, ChevronRight, Flower2, Music2, Pause, Play, Volume1, Volume2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play, Volume1, Volume2 } from "lucide-react";
 import { PlayerButton } from "@/components/PlayerButton";
 import bouquetImage from "@/assets/sunflower-bouquet.png";
 
