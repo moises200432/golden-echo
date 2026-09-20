@@ -164,9 +164,16 @@
   position: absolute;
   top: 0;
   left: var(--left);
-  font-size: var(--size);
-  line-height: 1;
+  width: var(--size);
+  height: var(--size);
   color: var(--flower-color);
+  background:
+    radial-gradient(circle at 50% 14%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 86% 42%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 72% 82%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 28% 82%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 14% 42%, currentColor 0 16%, transparent 17%),
+    radial-gradient(circle at 50% 50%, var(--primary) 0 18%, transparent 19%);
   filter: drop-shadow(0 0 8px color-mix(in oklab, var(--primary) 35%, transparent));
   animation: flower-fall var(--duration) linear var(--delay) infinite;
   will-change: transform, opacity;

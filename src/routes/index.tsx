@@ -120,7 +120,7 @@ function Index() {
   return (
     <main className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-[linear-gradient(155deg,var(--background)_0%,var(--secondary)_150%)] px-3 py-8 sm:px-6 sm:py-12">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {flowers.map((flower) => <span key={flower.id} className="flower select-none" style={flower.style}>🌼</span>)}
+        {flowers.map((flower) => <span key={flower.id} className="flower select-none" style={flower.style} />)}
       </div>
 
       <section className="glass-panel relative z-10 w-full max-w-[600px] overflow-hidden rounded-lg px-5 py-7 sm:px-9 sm:py-9" aria-label="Reproductor de Por Si Mañana No Estoy">
