@@ -21,7 +21,7 @@ export default function AlbumPage() {
     "COMERNOS",
     "SKY",
     "MOONLIGHT",
-    "POR SI MAÑANA NO ESTOY"
+    "POR SI MAÑANA NO ESTOY aqui "
   ];
 
   return (
